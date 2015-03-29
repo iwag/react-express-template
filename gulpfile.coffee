@@ -51,7 +51,7 @@ webpack = (name, ext, watch) ->
   .pipe(gulp.dest(dist_path))
 
 
-js = (watch) -> webpack("client", "cjsx", watch)
+js = (watch) -> webpack("client", "jsx", watch)
 gulp.task 'js', -> js(false)
 
 gulp.task 'js-dev', -> js(true)
