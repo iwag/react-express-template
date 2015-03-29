@@ -37,55 +37,84 @@ var Main = React.createClass({
     }
     });
 
+ var data =   [ {
+         title: "Rebuild: 85: Virtual Reality, The Final Frontier (naan, hak)",
+         link: "http://rebuild.fm/85/",
+         favicon_url: "http://favicon.st-hatena.com/?url=http://rebuild.fm/85/",
+         comment: "",
+         count: "7",
+         datetime: "2015-03-28T16:40:18+09:00",
+         created_at: "5時間前",
+         user:
+
+         {
+             name: "miyagawa",
+             profile_image_url: "http://www.st-hatena.com/users/mi/miyagawa/profile.gif"
+         },
+         permalink: "http://b.hatena.ne.jp/miyagawa/20150328#bookmark-245781291",
+         description: "Kazuho Okui さん、Hakuro Matsuda さんをゲストに迎えて、マラソン、MacBook, Google I/O, Facebook F8, VR, マトリックス、Apple Car などについて話しました。 スポンサー: DroidKaigi Show Notes San Francisco Rock 'n' Roll Half Marathon Race 2015 Apple... ",
+         thumbnail_url: "http://cdn-ak.b.st-hatena.com/entryimage/245781291-1427528461.jpg"
+
+     }
+     ];
+
+
+var IssueList = React.createClass({
+
+  propTypes: {
+    bookmarks: React.PropTypes.array.isRequired,
+    onPressBookmark: React.PropTypes.func.isRequired
+  },
+  render: function() {
+
+    var list = this.props.data.map(
+        function(b) {
+          return (
+            <Issue bookmark={b} />
+          )
+        }
+    );
+
+console.log(list);
+    return (
+          <div className="ui">
+          {list}
+          </div>
+    );
+  }
+});
+
+
 var Issue = React.createClass({
     displayName: 'Issue',
     onClick: function () {
-        window.location = this.props.href;
+        window.location = this.props.bookmark.permalink;
     },
     render: function () {
+
         var bookmark = this.props.bookmark;
+
         return (
-            <div className="ui container">
-                <div className="ui label">{this.props.title}</div>
+            <div className="ui teal segment">
+                <div className="ui label">{bookmark.title}</div>
               <img
-                src={this.props.profile_image_url}
+                src={bookmark.profile_image_url}
                 className="ui small image"
               />
               <div className="ui">
-                <div className="ui">{this.props.user}</div>
+                <div className="ui ">{bookmark.user.name}</div>
                 <img
-                  src={this.props.favicon_url}
+                  src={bookmark.user.favicon_url}
                   className="ui small image"
                 />
-
               </div>
             </div>
         );
 
       }
-})
 
-var IssueList = React.createClass({
-  render: function() {
-    return (
-      <div className="commentList">
-        Hello, world! I am a CommentList.
-        <Issue
-         title="Rebuild: 85: Virtual Reality, The Final Frontier (naan, hak)"
-         link="http://rebuild.fm/85/"
-         favicon_url= "http://favicon.st-hatena.com/?url=http://rebuild.fm/85/"
-         comment=""
-         count="7"
-         datetime="2015-03-28T16:40:18+09:00"
-         created_at="5時間前"
-         profile_image_url= "http://www.st-hatena.com/users/mi/miyagawa/profile.gif"
-         user="miyagawa"
-        />
-      </div>
-    );
-  }
+
 });
-
 
 
 var Home = React.createClass({
@@ -96,7 +125,7 @@ var Home = React.createClass({
         <h1 className="ui header">
           <span>Get to work!</span>
           <div className="sub header">
-            <IssueList />
+            <IssueList data={data}/>
           </div>
         </h1>
       </div>
