@@ -37,28 +37,6 @@ var Main = React.createClass({
     }
     });
 
- var data =   [ {
-         title: "Rebuild: 85: Virtual Reality, The Final Frontier (naan, hak)",
-         link: "http://rebuild.fm/85/",
-         favicon_url: "http://favicon.st-hatena.com/?url=http://rebuild.fm/85/",
-         comment: "",
-         count: "7",
-         datetime: "2015-03-28T16:40:18+09:00",
-         created_at: "5時間前",
-         user:
-
-         {
-             name: "miyagawa",
-             profile_image_url: "http://www.st-hatena.com/users/mi/miyagawa/profile.gif"
-         },
-         permalink: "http://b.hatena.ne.jp/miyagawa/20150328#bookmark-245781291",
-         description: "Kazuho Okui さん、Hakuro Matsuda さんをゲストに迎えて、マラソン、MacBook, Google I/O, Facebook F8, VR, マトリックス、Apple Car などについて話しました。 スポンサー: DroidKaigi Show Notes San Francisco Rock 'n' Roll Half Marathon Race 2015 Apple... ",
-         thumbnail_url: "http://cdn-ak.b.st-hatena.com/entryimage/245781291-1427528461.jpg"
-
-     }
-     ];
-
-
 var IssueList = React.createClass({
 
   propTypes: {
@@ -67,7 +45,7 @@ var IssueList = React.createClass({
   },
   render: function() {
 
-    var list = this.props.data.map(
+    var list = this.props.bookmarks.map(
         function(b) {
           return (
             <Issue bookmark={b} />
@@ -76,7 +54,7 @@ var IssueList = React.createClass({
     );
 
     return (
-          <div className="ui very relaxed items">
+          <div className="ui items">
           {list}
           </div>
     );
@@ -101,28 +79,90 @@ var Issue = React.createClass({
               />
               </div>
   <div className="right content">
-      <a className="header">{bookmark.title}</a>
+      <a className="header" href={bookmark.link}>{bookmark.title}</a>
       <div className="meta">
         <span className="cinema">{bookmark.user.name}</span>
       </div>
       <div className="description">
         <p>{bookmark.description}</p>
+        <p className="cinema">{bookmark.comment}</p>
       </div>
+
       <div className="extra">
-        <div className="ui label">IMAX</div>
-        <div className="ui label"><i class="globe icon"></i> Additional Languages</div>
-      <div className="ui right floated primary button">
-          Buy tickets
-          <i className="right chevron icon"></i>
+        <div className="ui label"></div>
+          <a href={bookmark.permalink}>
+          <div className="ui right floated primary button">
+                Bookmark
+              <i className="right chevron icon"></i>
+            </div>
+          </a>
+          </div>
         </div>
       </div>
-    </div>
-            </div>
         );
 
       }
 
 
+});
+
+
+var IssueListView = React.createClass({
+  getInitialState: function() {
+    return {
+      bookmarks: null,
+      loaded: false
+    };
+  },
+
+  componentDidMount: function() {
+    this.fetchData();
+  },
+
+  fetchData: function() {
+
+$.ajax({
+      url: 'http://feed.hbfav.com/iwg',
+      dataType: 'json',
+      success: function(data) {
+        this.setState({bookmarks: data.bookmarks, loaded: true});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(status, err.toString());
+      }.bind(this)
+    });
+  },
+
+  openBookmark: function(rowData) {
+  },
+
+  renderLoadingView: function() {
+    return (
+<div className="ui icon message">
+  <i className="notched circle loading icon"></i>
+  <div className="content">
+    <div className="header">
+      Just one second
+    </div>
+    <p>We're fetching that content for you.</p>
+  </div>
+</div>
+    );
+  },
+
+  render: function() {
+    if (!this.state.loaded) {
+      return this.renderLoadingView();
+    }
+
+    return (
+
+      <IssueList
+        bookmarks={this.state.bookmarks}
+        onPressBookmark={this.openBookmark}
+      />
+    );
+  }
 });
 
 
@@ -136,7 +176,7 @@ var Home = React.createClass({
 
           </div>
         </h1>
-                    <IssueList data={data}/>
+                    <IssueListView/>
       </div>
 
     </div>
