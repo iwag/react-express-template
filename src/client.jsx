@@ -11,23 +11,6 @@ var Route = Router.Route;
 var Routes = Router.Routes;
 var RouteHandler = Router.RouteHandler;
 
-var Home = React.createClass({
-                              render() {
-                              return (
-    <div className="column">
-      <div className="ui segment">
-        <h1 className="ui header">
-          <span>Get to work!</span>
-          <div className="sub header">
-            Make sure to check out README.md for development notes.
-          </div>
-        </h1>
-      </div>
-    </div>
-    );
-    }
-    });
-
 var About = React.createClass({
   render() {
   return (
@@ -48,6 +31,74 @@ var Main = React.createClass({
       <Header/>
       <div className="ui page grid">
         <this.props.activeRouteHandler/>
+      </div>
+    </div>
+    );
+    }
+    });
+
+var Issue = React.createClass({
+    displayName: 'Issue',
+    onClick: function () {
+        window.location = this.props.href;
+    },
+    render: function () {
+        var bookmark = this.props.bookmark;
+        return (
+            <div className="ui container">
+                <div className="ui label">{this.props.title}</div>
+              <img
+                src={this.props.profile_image_url}
+                className="ui small image"
+              />
+              <div className="ui">
+                <div className="ui">{this.props.user}</div>
+                <img
+                  src={this.props.favicon_url}
+                  className="ui small image"
+                />
+
+              </div>
+            </div>
+        );
+
+      }
+})
+
+var IssueList = React.createClass({
+  render: function() {
+    return (
+      <div className="commentList">
+        Hello, world! I am a CommentList.
+        <Issue
+         title="Rebuild: 85: Virtual Reality, The Final Frontier (naan, hak)"
+         link="http://rebuild.fm/85/"
+         favicon_url= "http://favicon.st-hatena.com/?url=http://rebuild.fm/85/"
+         comment=""
+         count="7"
+         datetime="2015-03-28T16:40:18+09:00"
+         created_at="5時間前"
+         profile_image_url= "http://www.st-hatena.com/users/mi/miyagawa/profile.gif"
+         user="miyagawa"
+        />
+      </div>
+    );
+  }
+});
+
+
+
+var Home = React.createClass({
+                              render() {
+                              return (
+    <div className="column">
+      <div className="ui segment">
+        <h1 className="ui header">
+          <span>Get to work!</span>
+          <div className="sub header">
+            <IssueList />
+          </div>
+        </h1>
       </div>
     </div>
     );
