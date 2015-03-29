@@ -40,10 +40,6 @@ webpack = (name, ext, watch) ->
           exclude: [new RegExp(modules_path), new RegExp(components_path)]
           loader: "babel-loader"
         }
-        {
-          test: /\.cjsx$/
-          loader: "transform?coffee-reactify"
-        }
       ]
 
   gulp.src("#{src_path}/#{name}.#{ext}")
@@ -76,15 +72,7 @@ gulp.task 'copy', ->
 
 gulp.task 'build', ['clean', 'copy', 'css', 'js']
 
-server_main = "#{src_path}/server.coffee"
-gulp.task 'server', ->
-  nodemon
-    script: server_main
-    watch: [server_main]
-    env:
-      PORT: process.env.PORT or 3000
-
-gulp.task 'default', ['clean', 'copy', 'css', 'server', 'js-dev', 'watch']
+gulp.task 'default', ['clean', 'copy', 'css', 'js-dev', 'watch']
 
 gulp.task 'watch', ['copy'], ->
   livereload.listen()
