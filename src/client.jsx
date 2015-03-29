@@ -92,9 +92,8 @@ var IssueList = React.createClass({
         }
     );
 
-console.log(list);
     return (
-          <div className="ui">
+          <div className="ui very relaxed items">
           {list}
           </div>
     );
@@ -112,19 +111,29 @@ var Issue = React.createClass({
         var bookmark = this.props.bookmark;
 
         return (
-            <div className="ui teal segment">
-                <div className="ui label">{bookmark.title}</div>
+            <div className="item">
+    <div className="image">
               <img
-                src={bookmark.profile_image_url}
-                className="ui small image"
+                src={bookmark.user.profile_image_url}
               />
-              <div className="ui">
-                <div className="ui ">{bookmark.user.name}</div>
-                <img
-                  src={bookmark.user.favicon_url}
-                  className="ui small image"
-                />
               </div>
+  <div className="right content">
+      <a className="header">{bookmark.title}</a>
+      <div className="meta">
+        <span className="cinema">{bookmark.user.name}</span>
+      </div>
+      <div className="description">
+        <p>{bookmark.description}</p>
+      </div>
+      <div className="extra">
+        <div className="ui label">IMAX</div>
+        <div className="ui label"><i class="globe icon"></i> Additional Languages</div>
+      <div className="ui right floated primary button">
+          Buy tickets
+          <i className="right chevron icon"></i>
+        </div>
+      </div>
+    </div>
             </div>
         );
 
@@ -140,12 +149,13 @@ var Home = React.createClass({
     <div className="column">
       <div className="ui segment">
         <h1 className="ui header">
-          <span>Get to work!</span>
           <div className="sub header">
-            <IssueList data={data}/>
+
           </div>
         </h1>
+                    <IssueList data={data}/>
       </div>
+
     </div>
     );
     }
