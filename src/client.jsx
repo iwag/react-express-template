@@ -4,7 +4,6 @@ var React = require('react/addons')
 var Router = require('react-router')
 var Header = require('./header')
 
-
 var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
 var Route = Router.Route;
@@ -70,32 +69,27 @@ var Issue = React.createClass({
     render: function () {
 
         var bookmark = this.props.bookmark;
+		var watch_url = "http://nicovideo.jp/watch/" + bookmark.cmsid
 
         return (
             <div className="item">
     <div className="image">
               <img
-                src={bookmark.user.profile_image_url}
+                src={bookmark.thumbnail_url}
               />
               </div>
   <div className="right content">
-      <a className="header" href={bookmark.link}>{bookmark.title}</a>
+      <a className="header" href={watch_url}>{bookmark.title}</a>
       <div className="meta">
-        <span className="cinema">{bookmark.user.name}</span>
       </div>
       <div className="description">
         <p>{bookmark.description}</p>
-        <p className="cinema">{bookmark.comment}</p>
       </div>
 
       <div className="extra">
-        <div className="ui label"></div>
-          <a href={bookmark.permalink}>
-          <div className="ui right floated primary button">
-                Bookmark
-              <i className="right chevron icon"></i>
-            </div>
-          </a>
+	    <div className="ui label">{bookmark.tags}</div>
+	    <div className="ui label">{bookmark.view_counter}</div>
+	    <div className="ui label">{bookmark.mylist_counter}</div>
           </div>
         </div>
       </div>
@@ -120,17 +114,29 @@ var IssueListView = React.createClass({
   },
 
   fetchData: function() {
+    var q = { 
+		  query: 'game',
+		  service: ['video'],
+	  	  search: ['title','description','tags'],
+	      join: ['cmsid','title','description',' tags', 'thumbnail_url', 'view_counter', 'mylist_counter'],
+		  sort_by: 'start_time',
+		  order: true,
+		  size:50
+	  };
+	  $.ajax({
+		  type: 'post',
+		  url: "http://api.search.nicovideo.jp/api/",
+		  data: JSON.stringify(q),
+		  contentType: 'application/JSON',
+		  dataType: 'JSON',
+		  scriptCharset: 'utf-8',
+		  error: function(data) {
+			  var a = data.responseText.split('\n');
+			  var v = JSON.parse(a[2]).values;
+			  this.setState({bookmarks: v, loaded: true});
+		  }.bind(this)
+});
 
-$.ajax({
-      url: 'http://feed.hbfav.com/iwg',
-      dataType: 'json',
-      success: function(data) {
-        this.setState({bookmarks: data.bookmarks, loaded: true});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(status, err.toString());
-      }.bind(this)
-    });
   },
 
   openBookmark: function(rowData) {

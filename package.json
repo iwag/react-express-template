@@ -30,7 +30,8 @@
     "rimraf": "^2.2.8",
     "semantic-ui-css": "^1.10.2",
     "serve-favicon": "^2.2.0",
-    "transform-loader": "^0.2.1"
+    "transform-loader": "^0.2.1",
+	"search-nico-js": "0.1.1"
   },
   "devDependencies": {}
 }
