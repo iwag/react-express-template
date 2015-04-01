@@ -29,7 +29,7 @@ var Main = React.createClass({
       <div>
       <Header/>
       <div className="ui page grid">
-      <this.props.activeRouteHandler/>
+      <Router.RouteHandler/>
       </div>
       </div>
     );
@@ -50,24 +50,16 @@ var Input = React.createClass({
   },
   render() {
     return (
-      <div>
       <div className="ui icon input">
         <input type="text" placeholder="..." value={this.state.textValue} onChange={this.changeText} />
         <i className="circular search icon" onClick={this.onClick} />
       </div>
-      </div>
     );
   }
-})
+});
 
 var VideoList = React.createClass({
-
-  propTypes: {
-    bookmarks: React.PropTypes.array.isRequired,
-    onPressBookmark: React.PropTypes.func.isRequired
-  },
   render() {
-
     var list = this.props.videos.map(
       function(b) {
         return (
@@ -251,14 +243,12 @@ var Home = React.createClass({
 
 
 var routes = (
-  <Routes location="hash">
-  <Route path="/" handler={Main}>
-  <DefaultRoute name="home" handler={Home}/>
-  <Route name="about" handler={About}/>
-  </Route>
-  </Routes>
-)
+    <Route path="/" handler={Main}>
+      <DefaultRoute name="home" handler={Home}/>
+      <Route name="about" handler={About}/>
+    </Route>
+);
 
-$(function() {
-  return React.renderComponent(routes, document.body);
+Router.run(routes, function(Handler){
+	  React.render(<Handler/>, document.body);
 });
