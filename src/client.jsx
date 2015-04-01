@@ -11,9 +11,9 @@ var Route = Router.Route;
 var Routes = Router.Routes;
 var RouteHandler = Router.RouteHandler;
 
-var Home = React.createClass({
-                              render() {
-                              return (
+class Home extends React.Component {
+   render() {
+      return (
     <div className="column">
       <div className="ui segment">
         <h1 className="ui header">
@@ -24,11 +24,11 @@ var Home = React.createClass({
         </h1>
       </div>
     </div>
-    );
-    }
-    });
+	  );
+   }
+}
 
-var About = React.createClass({
+class About extends React.Component {
   render() {
   return (
     <div className="column">
@@ -38,10 +38,10 @@ var About = React.createClass({
     </div>
     );
     }
-    });
+}
 
 
-var Main = React.createClass({
+class Main extends React.Component {
    render() {
        return (
     <div>
@@ -52,7 +52,7 @@ var Main = React.createClass({
     </div>
     );
     }
-    });
+}
 
 
 var routes = (
