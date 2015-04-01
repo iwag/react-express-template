@@ -42,12 +42,12 @@ var About = React.createClass({
 
 
 var Main = React.createClass({
-                              render() {
-                              return (
+   render() {
+       return (
     <div>
       <Header/>
       <div className="ui page grid">
-        <this.props.activeRouteHandler/>
+        <Router.RouteHandler />
       </div>
     </div>
     );
@@ -56,15 +56,13 @@ var Main = React.createClass({
 
 
 var routes = (
-  <Routes location="hash">
     <Route path="/" handler={Main}>
       <DefaultRoute name="home" handler={Home}/>
       <Route name="about" handler={About}/>
     </Route>
-  </Routes>
 )
 
-$(function() {
-	  return React.renderComponent(routes, document.body);
+Router.run(routes, function(Handler){
+	  React.render(<Handler/>, document.body);
 });
 
