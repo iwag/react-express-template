@@ -1,3 +1,9 @@
+Forked ...
+============
+
+* Use jsx instead of csjx
+* Remove server-side scripts
+
 react-express-template
 =============================
 
