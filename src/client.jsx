@@ -16,9 +16,10 @@ var About = React.createClass({
       <div className="column">
       <div className="ui segment">
       <h4 className="ui black header">This is the about page.</h4>
+      <Input />
       </div>
       </div>
-    );
+        );
   }
 });
 
@@ -35,6 +36,31 @@ var Main = React.createClass({
     );
   }
 });
+
+var Input = React.createClass({
+  getInitialState() {
+    return {
+      textValue: ""
+    };
+  },
+  changeText(e) {
+    this.setState({textValue: e.target.value});
+  },
+  onClick(e) {
+    this.props.onSearchSubmit({keyword: this.state.textValue});
+  },
+  render() {
+    return (
+      <div>
+      <div className="ui icon input">
+        <input type="text" placeholder="..." value={this.state.textValue} onChange={this.changeText} />
+        <i className="circular search icon" />
+      </div>
+      <div className="ui icon button" onClick={this.onClick}>Search It</div>
+      </div>
+    );
+  }
+})
 
 var IssueList = React.createClass({
 
@@ -62,9 +88,8 @@ var IssueList = React.createClass({
 
 var Tag = React.createClass({
   render() {
-    console.log(this.props.tag);
     return(
-      <a href=""><div className="ui basic button"><i className="info icon" /> {this.props.tag}</div></a>
+      <a href=""><div className="ui small basic button"><i className="info icon" /> {this.props.tag}</div></a>
     );
   }
 });
@@ -95,10 +120,10 @@ var Issue = React.createClass({
     return (
       <div className="item">
       <div className="image">
-      <img  src={bookmark.thumbnail_url} />
+      <img className="ui left medium rounded image" src={bookmark.thumbnail_url} />
       </div>
       <div className="content">
-      <a className="header" href={watch_url}>{bookmark.title}</a>
+      <h2 className="teal header"><a href={watch_url}>{bookmark.title}</a></h2>
       <TagList tags={bookmark.tags.split(" ")} />
 
       <div className="description">
@@ -112,6 +137,10 @@ var Issue = React.createClass({
       <a className="star">
         <i className="star icon"></i> {bookmark.mylist_counter} Likes
       </a>
+      <a className="calendar">
+        <i className="calendar icon"></i> {bookmark.start_time}
+      </a>
+
       </div>
 
       </div>
@@ -128,22 +157,22 @@ var IssueListView = React.createClass({
   getInitialState() {
     return {
       bookmarks: null,
-      loaded: false
+      loaded: true
     };
   },
 
   componentDidMount() {
-    this.fetchData();
+    //this.fetchData();
   },
 
-  fetchData() {
+  fetchData(keyword) {
     var q = {
-      query: 'blood game',
+      query: keyword,
       service: ['video'],
       search: ['title','description','tags'],
-      join: ['cmsid','title','description','tags', 'thumbnail_url', 'view_counter', 'mylist_counter'],
+      join: ['cmsid','title','description','tags', 'thumbnail_url', 'view_counter', 'mylist_counter', 'start_time'],
       sort_by: '_popular',
-      order: false,
+      order: true,
       size:50
     };
     $.ajax({
@@ -179,14 +208,29 @@ var IssueListView = React.createClass({
     );
   },
 
+  handleSubmit(d) {
+    console.log(d);
+    this.fetchData(d.keyword);
+    this.state.loaded = false;
+    this.render();
+  },
+
   render() {
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
 
-    return (
+    var v;
+    if (this.state.bookmarks)
+      v = <IssueList bookmarks={this.state.bookmarks} onPressBookmark={this.openBookmark} />
+    else
+      v = <div />
 
-      <IssueList bookmarks={this.state.bookmarks} onPressBookmark={this.openBookmark} />
+    return (
+      <div>
+      <Input onSearchSubmit={this.handleSubmit}/>
+      {v}
+      </div>
     );
   }
 });
@@ -199,7 +243,6 @@ var Home = React.createClass({
       <div className="ui segment">
       <h1 className="ui header">
       <div className="sub header">
-
       </div>
       </h1>
       <IssueListView/>
