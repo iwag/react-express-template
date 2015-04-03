@@ -42,7 +42,7 @@ var IssueList = React.createClass({
     bookmarks: React.PropTypes.array.isRequired,
     onPressBookmark: React.PropTypes.func.isRequired
   },
-  render: function() {
+  render() {
 
     var list = this.props.bookmarks.map(
       function(b) {
@@ -63,10 +63,10 @@ var IssueList = React.createClass({
 
 var Issue = React.createClass({
   displayName: 'Issue',
-  onClick: function () {
+  onClick () {
     window.location = this.props.bookmark.permalink;
   },
-  render: function () {
+  render () {
 
     var bookmark = this.props.bookmark;
     var watch_url = "http://nicovideo.jp/watch/" + bookmark.cmsid
@@ -102,18 +102,18 @@ var Issue = React.createClass({
 
 
 var IssueListView = React.createClass({
-  getInitialState: function() {
+  getInitialState() {
     return {
       bookmarks: null,
       loaded: false
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.fetchData();
   },
 
-  fetchData: function() {
+  fetchData() {
     var q = {
       query: 'game',
       service: ['video'],
@@ -139,10 +139,10 @@ var IssueListView = React.createClass({
 
   },
 
-  openBookmark: function(rowData) {
+  openBookmark(rowData) {
   },
 
-  renderLoadingView: function() {
+  renderLoadingView() {
     return (
       <div className="ui icon message">
       <i className="notched circle loading icon"></i>
@@ -156,17 +156,14 @@ var IssueListView = React.createClass({
     );
   },
 
-  render: function() {
+  render() {
     if (!this.state.loaded) {
       return this.renderLoadingView();
     }
 
     return (
 
-      <IssueList
-      bookmarks={this.state.bookmarks}
-      onPressBookmark={this.openBookmark}
-      />
+      <IssueList bookmarks={this.state.bookmarks} onPressBookmark={this.openBookmark} />
     );
   }
 });
