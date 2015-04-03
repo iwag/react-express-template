@@ -60,6 +60,27 @@ var IssueList = React.createClass({
   }
 });
 
+var Tag = React.createClass({
+  render() {
+    console.log(this.props.tag);
+    return(
+      <a href=""><div className="ui basic button"><i className="info icon" /> {this.props.tag}</div></a>
+    );
+  }
+});
+
+var TagList =  React.createClass({
+  render () {
+    var list = this.props.tags.map(
+        function(t) {
+          return (<Tag tag={t} />);
+        }
+    );
+    return (
+      <div className="meta">{list}</div>
+  );
+  }
+});
 
 var Issue = React.createClass({
   displayName: 'Issue',
@@ -74,23 +95,25 @@ var Issue = React.createClass({
     return (
       <div className="item">
       <div className="image">
-      <img
-      src={bookmark.thumbnail_url}
-      />
+      <img  src={bookmark.thumbnail_url} />
       </div>
-      <div className="right content">
+      <div className="content">
       <a className="header" href={watch_url}>{bookmark.title}</a>
-      <div className="meta">
-      </div>
+      <TagList tags={bookmark.tags.split(" ")} />
+
       <div className="description">
       <p>{bookmark.description}</p>
       </div>
 
-      <div className="extra">
-      <div className="ui label">{bookmark.tags}</div>
-      <div className="ui label">{bookmark.view_counter}</div>
-      <div className="ui label">{bookmark.mylist_counter}</div>
+      <div className="extra right">
+      <a className="smile">
+      <i className="smile icon"></i> {bookmark.view_counter} Views
+      </a>
+      <a className="star">
+        <i className="star icon"></i> {bookmark.mylist_counter} Likes
+      </a>
       </div>
+
       </div>
       </div>
     );
@@ -115,12 +138,12 @@ var IssueListView = React.createClass({
 
   fetchData() {
     var q = {
-      query: 'game',
+      query: 'blood game',
       service: ['video'],
       search: ['title','description','tags'],
-      join: ['cmsid','title','description',' tags', 'thumbnail_url', 'view_counter', 'mylist_counter'],
-      sort_by: 'start_time',
-      order: true,
+      join: ['cmsid','title','description','tags', 'thumbnail_url', 'view_counter', 'mylist_counter'],
+      sort_by: '_popular',
+      order: false,
       size:50
     };
     $.ajax({
