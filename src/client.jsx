@@ -10,31 +10,14 @@ var Route = Router.Route;
 var Routes = Router.Routes;
 var RouteHandler = Router.RouteHandler;
 
-class Home extends React.Component {
-   render() {
-      return (
-    <div className="column">
-      <div className="ui segment">
-        <h1 className="ui header">
-          <span>Get to work!</span>
-          <div className="sub header">
-            Make sure to check out README.md for development notes.
-          </div>
-        </h1>
-      </div>
-    </div>
-	  );
-   }
-}
-
 class About extends React.Component {
   render() {
-  return (
-    <div className="column">
+    return (
+      <div className="column">
       <div className="ui segment">
-        <h4 className="ui black header">This is the about page.</h4>
+      <h4 className="ui black header">This is the about page.</h4>
       </div>
-    </div>
+      </div>
     );
     }
 }
@@ -42,13 +25,13 @@ class About extends React.Component {
 
 class Main extends React.Component {
    render() {
-       return (
-    <div>
+    return (
+      <div>
       <Header/>
       <div className="ui page grid">
-        <Router.RouteHandler />
+      <this.props.activeRouteHandler/>
       </div>
-    </div>
+      </div>
     );
     }
 }
@@ -62,57 +45,57 @@ var IssueList = React.createClass({
   render: function() {
 
     var list = this.props.bookmarks.map(
-        function(b) {
-          return (
-            <Issue bookmark={b} />
-          )
-        }
+      function(b) {
+        return (
+          <Issue bookmark={b} />
+        )
+      }
     );
 
     return (
-          <div className="ui items">
-          {list}
-          </div>
+      <div className="ui items">
+      {list}
+      </div>
     );
   }
 });
 
 
 var Issue = React.createClass({
-    displayName: 'Issue',
-    onClick: function () {
-        window.location = this.props.bookmark.permalink;
-    },
-    render: function () {
+  displayName: 'Issue',
+  onClick: function () {
+    window.location = this.props.bookmark.permalink;
+  },
+  render: function () {
 
-        var bookmark = this.props.bookmark;
-		var watch_url = "http://nicovideo.jp/watch/" + bookmark.cmsid
+    var bookmark = this.props.bookmark;
+    var watch_url = "http://nicovideo.jp/watch/" + bookmark.cmsid
 
-        return (
-            <div className="item">
-    <div className="image">
-              <img
-                src={bookmark.thumbnail_url}
-              />
-              </div>
-  <div className="right content">
+    return (
+      <div className="item">
+      <div className="image">
+      <img
+      src={bookmark.thumbnail_url}
+      />
+      </div>
+      <div className="right content">
       <a className="header" href={watch_url}>{bookmark.title}</a>
       <div className="meta">
       </div>
       <div className="description">
-        <p>{bookmark.description}</p>
+      <p>{bookmark.description}</p>
       </div>
 
       <div className="extra">
-	    <div className="ui label">{bookmark.tags}</div>
-	    <div className="ui label">{bookmark.view_counter}</div>
-	    <div className="ui label">{bookmark.mylist_counter}</div>
-          </div>
-        </div>
+      <div className="ui label">{bookmark.tags}</div>
+      <div className="ui label">{bookmark.view_counter}</div>
+      <div className="ui label">{bookmark.mylist_counter}</div>
       </div>
-        );
+      </div>
+      </div>
+    );
 
-      }
+  }
 
 
 });
@@ -131,28 +114,28 @@ var IssueListView = React.createClass({
   },
 
   fetchData: function() {
-    var q = { 
-		  query: 'game',
-		  service: ['video'],
-	  	  search: ['title','description','tags'],
-	      join: ['cmsid','title','description',' tags', 'thumbnail_url', 'view_counter', 'mylist_counter'],
-		  sort_by: 'start_time',
-		  order: true,
-		  size:50
-	  };
-	  $.ajax({
-		  type: 'post',
-		  url: "http://api.search.nicovideo.jp/api/",
-		  data: JSON.stringify(q),
-		  contentType: 'application/JSON',
-		  dataType: 'JSON',
-		  scriptCharset: 'utf-8',
-		  error: function(data) {
-			  var a = data.responseText.split('\n');
-			  var v = JSON.parse(a[2]).values;
-			  this.setState({bookmarks: v, loaded: true});
-		  }.bind(this)
-});
+    var q = {
+      query: 'game',
+      service: ['video'],
+      search: ['title','description','tags'],
+      join: ['cmsid','title','description',' tags', 'thumbnail_url', 'view_counter', 'mylist_counter'],
+      sort_by: 'start_time',
+      order: true,
+      size:50
+    };
+    $.ajax({
+      type: 'post',
+      url: "http://api.search.nicovideo.jp/api/",
+      data: JSON.stringify(q),
+      contentType: 'application/JSON',
+      dataType: 'JSON',
+      scriptCharset: 'utf-8',
+      error: function(data) {
+        var a = data.responseText.split('\n');
+        var v = JSON.parse(a[2]).values;
+        this.setState({bookmarks: v, loaded: true});
+      }.bind(this)
+    });
 
   },
 
@@ -161,15 +144,15 @@ var IssueListView = React.createClass({
 
   renderLoadingView: function() {
     return (
-<div className="ui icon message">
-  <i className="notched circle loading icon"></i>
-  <div className="content">
-    <div className="header">
+      <div className="ui icon message">
+      <i className="notched circle loading icon"></i>
+      <div className="content">
+      <div className="header">
       Just one second
-    </div>
-    <p>We're fetching that content for you.</p>
-  </div>
-</div>
+      </div>
+      <p>We re fetching that content for you.</p>
+      </div>
+      </div>
     );
   },
 
@@ -181,8 +164,8 @@ var IssueListView = React.createClass({
     return (
 
       <IssueList
-        bookmarks={this.state.bookmarks}
-        onPressBookmark={this.openBookmark}
+      bookmarks={this.state.bookmarks}
+      onPressBookmark={this.openBookmark}
       />
     );
   }
@@ -190,22 +173,22 @@ var IssueListView = React.createClass({
 
 
 var Home = React.createClass({
-                              render() {
-                              return (
-    <div className="column">
+  render() {
+    return (
+      <div className="column">
       <div className="ui segment">
-        <h1 className="ui header">
-          <div className="sub header">
+      <h1 className="ui header">
+      <div className="sub header">
 
-          </div>
-        </h1>
-                    <IssueListView/>
+      </div>
+      </h1>
+      <IssueListView/>
       </div>
 
-    </div>
+      </div>
     );
-    }
-    });
+  }
+});
 
 
 var routes = (
