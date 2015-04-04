@@ -15,8 +15,7 @@ class About extends React.Component {
     return (
       <div className="column">
       <div className="ui segment">
-      <h4 className="ui black header">This is the about page.</h4>
-      <Input />
+      <h4 className="ui black header"></h4>
       </div>
       </div>
         );
@@ -54,9 +53,8 @@ var Input = React.createClass({
       <div>
       <div className="ui icon input">
         <input type="text" placeholder="..." value={this.state.textValue} onChange={this.changeText} />
-        <i className="circular search icon" />
+        <i className="circular search icon" onClick={this.onClick} />
       </div>
-      <div className="ui icon button" onClick={this.onClick}>Search It</div>
       </div>
     );
   }
@@ -156,6 +154,7 @@ var Issue = React.createClass({
 var IssueListView = React.createClass({
   getInitialState() {
     return {
+      init: true,
       bookmarks: null,
       loaded: true
     };
@@ -202,29 +201,25 @@ var IssueListView = React.createClass({
       <div className="header">
       Just one second
       </div>
-      <p>We re fetching that content for you.</p>
+      <p>Searching...</p>
       </div>
       </div>
     );
   },
 
   handleSubmit(d) {
-    console.log(d);
     this.fetchData(d.keyword);
-    this.state.loaded = false;
-    this.render();
+    this.setState({ bookmarks: null, init:false, loaded: false});
   },
 
   render() {
-    if (!this.state.loaded) {
-      return this.renderLoadingView();
-    }
-
     var v;
     if (this.state.bookmarks)
       v = <IssueList bookmarks={this.state.bookmarks} onPressBookmark={this.openBookmark} />
-    else
+    else if (this.state.init)
       v = <div />
+    else
+      v = this.renderLoadingView()
 
     return (
       <div>

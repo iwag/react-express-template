@@ -9,7 +9,7 @@ export default React.createClass({
       <div className="ui page grid">
         <div className="column" style={{"padding-bottom": 0}}>
           <div className="title item">
-            <b>HBFav by React.js</b>
+            <b>nicovideo search by React.js</b>
           </div>
           <Link className="item" to="home">
             Home
