@@ -86,8 +86,9 @@ var IssueList = React.createClass({
 
 var Tag = React.createClass({
   render() {
+	  var link = encodeURI("http://search.nicovideo.jp/tag/" + this.props.tag);
     return(
-      <a href=""><div className="ui small basic button"><i className="info icon" /> {this.props.tag}</div></a>
+      <a href={link}><div className="ui small basic button"><i className="info icon" /> {this.props.tag}</div></a>
     );
   }
 });
