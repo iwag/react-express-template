@@ -1,1 +1,1 @@
-web: $(npm bin)/coffee ./src/server.coffee
+web: bundle exec ruby app.rb -p $PORT

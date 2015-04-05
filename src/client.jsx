@@ -58,7 +58,7 @@ var Input = React.createClass({
       </div>
     );
   }
-})
+});
 
 var VideoList = React.createClass({
 
