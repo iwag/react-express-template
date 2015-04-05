@@ -60,7 +60,7 @@ var Input = React.createClass({
   }
 })
 
-var IssueList = React.createClass({
+var VideoList = React.createClass({
 
   propTypes: {
     bookmarks: React.PropTypes.array.isRequired,
@@ -71,7 +71,7 @@ var IssueList = React.createClass({
     var list = this.props.bookmarks.map(
       function(b) {
         return (
-          <Issue bookmark={b} />
+          <Video bookmark={b} />
         )
       }
     );
@@ -106,8 +106,8 @@ var TagList =  React.createClass({
   }
 });
 
-var Issue = React.createClass({
-  displayName: 'Issue',
+var Video = React.createClass({
+  displayName: 'Video',
   onClick () {
     window.location = this.props.bookmark.permalink;
   },
@@ -152,7 +152,7 @@ var Issue = React.createClass({
 });
 
 
-var IssueListView = React.createClass({
+var VideoListView = React.createClass({
   getInitialState() {
     return {
       init: true,
@@ -216,7 +216,7 @@ var IssueListView = React.createClass({
   render() {
     var v;
     if (this.state.bookmarks)
-      v = <IssueList bookmarks={this.state.bookmarks} onPressBookmark={this.openBookmark} />
+      v = <VideoList bookmarks={this.state.bookmarks} onPressBookmark={this.openBookmark} />
     else if (this.state.init)
       v = <div />
     else
@@ -241,7 +241,7 @@ var Home = React.createClass({
       <div className="sub header">
       </div>
       </h1>
-      <IssueListView/>
+      <VideoListView/>
       </div>
 
       </div>
