@@ -60,7 +60,7 @@ var Input = React.createClass({
   }
 })
 
-var IssueList = React.createClass({
+var VideoList = React.createClass({
 
   propTypes: {
     bookmarks: React.PropTypes.array.isRequired,
@@ -68,10 +68,10 @@ var IssueList = React.createClass({
   },
   render() {
 
-    var list = this.props.bookmarks.map(
+    var list = this.props.videos.map(
       function(b) {
         return (
-          <Issue bookmark={b} />
+          <Video video={b} />
         )
       }
     );
@@ -106,38 +106,38 @@ var TagList =  React.createClass({
   }
 });
 
-var Issue = React.createClass({
-  displayName: 'Issue',
+var Video = React.createClass({
+  displayName: 'Video',
   onClick () {
-    window.location = this.props.bookmark.permalink;
+    window.location = this.props.video.permalink;
   },
   render () {
 
-    var bookmark = this.props.bookmark;
-    var watch_url = "http://nicovideo.jp/watch/" + bookmark.cmsid
+    var video = this.props.video;
+    var watch_url = "http://nicovideo.jp/watch/" + video.cmsid
 
     return (
       <div className="item">
       <div className="image">
-      <img className="ui left medium rounded image" src={bookmark.thumbnail_url} />
+      <img className="ui left medium rounded image" src={video.thumbnail_url} />
       </div>
       <div className="content">
-      <h2 className="teal header"><a href={watch_url}>{bookmark.title}</a></h2>
-      <TagList tags={bookmark.tags.split(" ")} />
+      <h2 className="teal header"><a href={watch_url}>{video.title}</a></h2>
+      <TagList tags={video.tags.split(" ")} />
 
       <div className="description">
-      <p>{bookmark.description}</p>
+      <p>{video.description}</p>
       </div>
 
       <div className="extra right">
       <a className="smile">
-      <i className="smile icon"></i> {bookmark.view_counter} Views
+      <i className="smile icon"></i> {video.view_counter} Views
       </a>
       <a className="star">
-        <i className="star icon"></i> {bookmark.mylist_counter} Likes
+        <i className="star icon"></i> {video.mylist_counter} Likes
       </a>
       <a className="calendar">
-        <i className="calendar icon"></i> {bookmark.start_time}
+        <i className="calendar icon"></i> {video.start_time}
       </a>
 
       </div>
@@ -152,11 +152,11 @@ var Issue = React.createClass({
 });
 
 
-var IssueListView = React.createClass({
+var VideoListView = React.createClass({
   getInitialState() {
     return {
       init: true,
-      bookmarks: null,
+      videos: null,
       loaded: true
     };
   },
@@ -185,13 +185,13 @@ var IssueListView = React.createClass({
       error: function(data) {
         var a = data.responseText.split('\n');
         var v = JSON.parse(a[2]).values;
-        this.setState({bookmarks: v, loaded: true});
+        this.setState({videos: v, loaded: true});
       }.bind(this)
     });
 
   },
 
-  openBookmark(rowData) {
+  openvideo(rowData) {
   },
 
   renderLoadingView() {
@@ -210,13 +210,13 @@ var IssueListView = React.createClass({
 
   handleSubmit(d) {
     this.fetchData(d.keyword);
-    this.setState({ bookmarks: null, init:false, loaded: false});
+    this.setState({ videos: null, init:false, loaded: false});
   },
 
   render() {
     var v;
-    if (this.state.bookmarks)
-      v = <IssueList bookmarks={this.state.bookmarks} onPressBookmark={this.openBookmark} />
+    if (this.state.videos)
+      v = <VideoList videos={this.state.videos} onPressvideo={this.openvideo} />
     else if (this.state.init)
       v = <div />
     else
@@ -241,7 +241,7 @@ var Home = React.createClass({
       <div className="sub header">
       </div>
       </h1>
-      <IssueListView/>
+      <VideoListView/>
       </div>
 
       </div>
