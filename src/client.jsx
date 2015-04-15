@@ -165,7 +165,9 @@ var VideoListView = React.createClass({
       join: ['cmsid','title','description','tags', 'thumbnail_url', 'view_counter', 'mylist_counter', 'start_time'],
       sort_by: '_popular',
       order: true,
-      size:50
+      size:75,
+      issuer: "github.com/iwag",
+      reason: "react js"
     };
     $.ajax({
       type: 'post',
